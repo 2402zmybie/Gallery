@@ -20,6 +20,7 @@ import com.hr.gallery.PagerPhotoActivity
 import com.hr.gallery.PhotoActivity
 import com.hr.gallery.PhotoItem
 import com.hr.gallery.R
+import kotlinx.android.synthetic.main.activity_photo.view.*
 import kotlinx.android.synthetic.main.gallery_cell.view.*
 import org.jetbrains.anko.startActivity
 import java.util.*
@@ -47,15 +48,21 @@ class GalleryAdapter : ListAdapter<PhotoItem, GalleryAdapter.MyViewHolder>(DIFFC
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.itemView.shimmerLayoutCell.apply {
-            //几件事一起做(或者用run)
-            setShimmerColor(0x55FFFFFF)
-            setShimmerAngle(0)
-            //开始闪动
-            startShimmerAnimation()
+        var pictureItem = getItem(position)
+        with(holder.itemView) {
+            this.shimmerLayoutCell.apply {
+                setShimmerColor(0x55FFFFFF)
+                setShimmerAngle(0)
+                //开始闪动
+                startShimmerAnimation()
+            }
+            this.tv_title.text = pictureItem.user
+            this.tv_thumb.text = pictureItem.likes.toString()
+            this.tv_favorite.text = pictureItem.favorites.toString()
         }
+
         Glide.with(holder.itemView)
-            .load(getItem(position).previewURL)
+            .load(pictureItem.previewURL)
             .placeholder(R.drawable.photo_placeholder)
             .listener(object :RequestListener<Drawable>{
                 override fun onLoadFailed(
