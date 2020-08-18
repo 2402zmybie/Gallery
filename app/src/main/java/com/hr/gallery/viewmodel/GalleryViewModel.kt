@@ -21,7 +21,7 @@ class GalleryViewModel(application: Application) : AndroidViewModel(application)
     get() = _photoListLive
 
     //获取URL
-    private val keyWords = arrayOf("cat","dog","car")
+    private val keyWords = arrayOf("cat","dog","car","flowers")
     private fun getUrl():String {
         return "https://pixabay.com/api/?key=17921301-974ad23d82135fa91669f2b9f&per_page=100&q=${keyWords.random()}"
     }

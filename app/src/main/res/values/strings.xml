@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Gallery</string>
+    <string name="photoTag">photoTag</string>
 </resources>

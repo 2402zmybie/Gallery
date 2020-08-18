@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"
+    android:layout_margin="2dp"
     android:orientation="vertical">
 
     <io.supercharge.shimmerlayout.ShimmerLayout
@@ -17,7 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
             tools:srcCompat="@tools:sample/avatars"
             android:contentDescription="TODO" />
     </io.supercharge.shimmerlayout.ShimmerLayout>

@@ -1,5 +1,6 @@
 package com.hr.gallery
 
+import android.icu.lang.UCharacter
 import android.os.Bundle
 import android.os.Handler
 import android.view.*
@@ -10,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.hr.gallery.adapter.GalleryAdapter
 import com.hr.gallery.viewmodel.GalleryViewModel
 import kotlinx.android.synthetic.main.fragment_gallery.*
@@ -33,7 +35,7 @@ class GalleryFragment:Fragment() {
         var galleryAdapter = GalleryAdapter()
         recyclerView.apply {
             adapter = galleryAdapter
-            layoutManager = GridLayoutManager(requireContext(),2)
+            layoutManager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
         }
         // 注意AndroidViewModel 第二个参数 ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
         galleryViewModel = ViewModelProvider(this,ViewModelProvider.AndroidViewModelFactory(requireActivity().application)).get(GalleryViewModel::class.java)

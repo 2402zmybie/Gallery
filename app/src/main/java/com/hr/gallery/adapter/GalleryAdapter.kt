@@ -16,11 +16,15 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.hr.gallery.PagerPhotoActivity
 import com.hr.gallery.PhotoActivity
 import com.hr.gallery.PhotoItem
 import com.hr.gallery.R
 import kotlinx.android.synthetic.main.gallery_cell.view.*
 import org.jetbrains.anko.startActivity
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class GalleryAdapter : ListAdapter<PhotoItem, GalleryAdapter.MyViewHolder>(DIFFCALLBACK) {
 
@@ -31,7 +35,13 @@ class GalleryAdapter : ListAdapter<PhotoItem, GalleryAdapter.MyViewHolder>(DIFFC
 //            Bundle().apply {
 //                this.putParcelable("PHOTO",)
 //            }
-           parent.context.startActivity<PhotoActivity>("PHOTO" to getItem(holder.adapterPosition))
+            //跳转到显示图片界面
+//           parent.context.startActivity<PhotoActivity>("PHOTO" to getItem(holder.adapterPosition))
+            //跳转到viwepager2画廊界面
+            var bundle:Bundle = Bundle()
+            bundle.putParcelableArrayList("PHOTO_LIST", ArrayList<PhotoItem>(currentList))
+            bundle.putInt("PHOTO_POSITION", holder.adapterPosition)
+            parent.context.startActivity<PagerPhotoActivity>("PHOTO_DATA" to bundle)
         }
         return holder
     }
@@ -46,7 +56,7 @@ class GalleryAdapter : ListAdapter<PhotoItem, GalleryAdapter.MyViewHolder>(DIFFC
         }
         Glide.with(holder.itemView)
             .load(getItem(position).previewURL)
-            .placeholder(R.drawable.ic_photo_gray_24dp)
+            .placeholder(R.drawable.photo_placeholder)
             .listener(object :RequestListener<Drawable>{
                 override fun onLoadFailed(
                     e: GlideException?,
@@ -75,7 +85,7 @@ class GalleryAdapter : ListAdapter<PhotoItem, GalleryAdapter.MyViewHolder>(DIFFC
 
     object DIFFCALLBACK : DiffUtil.ItemCallback<PhotoItem>() {
         override fun areItemsTheSame(oldItem: PhotoItem, newItem: PhotoItem): Boolean {
-            return oldItem == newItem
+            return oldItem === newItem
         }
 
         override fun areContentsTheSame(oldItem: PhotoItem, newItem: PhotoItem): Boolean {
@@ -88,3 +98,4 @@ class GalleryAdapter : ListAdapter<PhotoItem, GalleryAdapter.MyViewHolder>(DIFFC
     }
 
 }
+
