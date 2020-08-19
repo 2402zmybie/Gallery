@@ -14,11 +14,11 @@ import kotlinx.android.synthetic.main.pager_photo_view.view.*
 
 class PagerPhotoListAdapter: ListAdapter<PhotoItem,PagerPhotoListAdapter.MyViewHolder>(object :DiffUtil.ItemCallback<PhotoItem>(){
     override fun areItemsTheSame(oldItem: PhotoItem, newItem: PhotoItem): Boolean {
-        return oldItem === newItem
+        return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(oldItem: PhotoItem, newItem: PhotoItem): Boolean {
-        return oldItem.id == newItem.id
+        return oldItem == newItem
     }
 }) {
 

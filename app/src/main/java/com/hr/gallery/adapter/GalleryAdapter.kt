@@ -8,6 +8,7 @@ import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -27,7 +28,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class GalleryAdapter : ListAdapter<PhotoItem, GalleryAdapter.MyViewHolder>(DIFFCALLBACK) {
+class GalleryAdapter : PagedListAdapter<PhotoItem, GalleryAdapter.MyViewHolder>(DIFFCALLBACK) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -40,7 +41,7 @@ class GalleryAdapter : ListAdapter<PhotoItem, GalleryAdapter.MyViewHolder>(DIFFC
 //           parent.context.startActivity<PhotoActivity>("PHOTO" to getItem(holder.adapterPosition))
             //跳转到viwepager2画廊界面
             var bundle:Bundle = Bundle()
-            bundle.putParcelableArrayList("PHOTO_LIST", ArrayList<PhotoItem>(currentList))
+            bundle.putParcelableArrayList("PHOTO_LIST", ArrayList<PhotoItem>(currentList!!))
             bundle.putInt("PHOTO_POSITION", holder.adapterPosition)
             parent.context.startActivity<PagerPhotoActivity>("PHOTO_DATA" to bundle)
         }
@@ -56,13 +57,13 @@ class GalleryAdapter : ListAdapter<PhotoItem, GalleryAdapter.MyViewHolder>(DIFFC
                 //开始闪动
                 startShimmerAnimation()
             }
-            this.tv_title.text = pictureItem.user
+            this.tv_title.text = pictureItem!!.user
             this.tv_thumb.text = pictureItem.likes.toString()
             this.tv_favorite.text = pictureItem.favorites.toString()
         }
 
         Glide.with(holder.itemView)
-            .load(pictureItem.previewURL)
+            .load(pictureItem!!.previewURL)
             .placeholder(R.drawable.photo_placeholder)
             .listener(object :RequestListener<Drawable>{
                 override fun onLoadFailed(
@@ -92,11 +93,11 @@ class GalleryAdapter : ListAdapter<PhotoItem, GalleryAdapter.MyViewHolder>(DIFFC
 
     object DIFFCALLBACK : DiffUtil.ItemCallback<PhotoItem>() {
         override fun areItemsTheSame(oldItem: PhotoItem, newItem: PhotoItem): Boolean {
-            return oldItem === newItem
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: PhotoItem, newItem: PhotoItem): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem == newItem
         }
 
     }

@@ -6,6 +6,7 @@ import android.os.Handler
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -17,8 +18,8 @@ import com.hr.gallery.viewmodel.GalleryViewModel
 import kotlinx.android.synthetic.main.fragment_gallery.*
 
 class GalleryFragment:Fragment() {
-
-    private lateinit var galleryViewModel:GalleryViewModel
+    //简易viewmodel的写法
+    private val galleryViewModel by viewModels<GalleryViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,18 +38,18 @@ class GalleryFragment:Fragment() {
             adapter = galleryAdapter
             layoutManager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
         }
-        // 注意AndroidViewModel 第二个参数 ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
-        galleryViewModel = ViewModelProvider(this,ViewModelProvider.AndroidViewModelFactory(requireActivity().application)).get(GalleryViewModel::class.java)
-        galleryViewModel.photoListLive.observe(this, Observer {
+
+        //下拉刷新监听
+        swipeLayoutGallery.setOnRefreshListener {
+            galleryViewModel.resetQuery()
+        }
+
+        galleryViewModel.pageListLiveData.observe(viewLifecycleOwner, Observer {
             galleryAdapter.submitList(it)
             swipeLayoutGallery.isRefreshing = false
         })
 
-        galleryViewModel.photoListLive.value?: galleryViewModel.fetchData()
 
-        swipeLayoutGallery.setOnRefreshListener {
-            galleryViewModel.fetchData()
-        }
     }
 
 
@@ -62,8 +63,7 @@ class GalleryFragment:Fragment() {
         when(item.itemId) {
             R.id.swiperRefreshCaditor -> {
                 swipeLayoutGallery.isRefreshing = true
-                //等1秒
-                Handler().postDelayed(Runnable { galleryViewModel.fetchData() },1000)
+                galleryViewModel.resetQuery()
             }
         }
         return super.onOptionsItemSelected(item)
