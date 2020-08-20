@@ -3,6 +3,7 @@ package com.hr.gallery
 import android.icu.lang.UCharacter
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -13,7 +14,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.blankj.utilcode.util.LogUtils
 import com.hr.gallery.adapter.GalleryAdapter
+import com.hr.gallery.paging.NetworkStatus
 import com.hr.gallery.viewmodel.GalleryViewModel
 import kotlinx.android.synthetic.main.fragment_gallery.*
 
@@ -33,7 +36,7 @@ class GalleryFragment:Fragment() {
         super.onActivityCreated(savedInstanceState)
         //1 显示menu
         setHasOptionsMenu(true)
-        var galleryAdapter = GalleryAdapter()
+        var galleryAdapter = GalleryAdapter(galleryViewModel)
         recyclerView.apply {
             adapter = galleryAdapter
             layoutManager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
@@ -46,7 +49,13 @@ class GalleryFragment:Fragment() {
 
         galleryViewModel.pageListLiveData.observe(viewLifecycleOwner, Observer {
             galleryAdapter.submitList(it)
-            swipeLayoutGallery.isRefreshing = false
+
+        })
+
+        galleryViewModel.networkStatus.observe(viewLifecycleOwner, Observer {
+            Log.e("hello", "$it")
+            galleryAdapter.updateNetWorkStatus(it)
+            swipeLayoutGallery.isRefreshing = it == NetworkStatus.INITIAL_LOADING
         })
 
 

@@ -79,7 +79,7 @@ class PagerPhotoActivity : AppCompatActivity() {
         if(url == null) {
             ToastUtils.showShort("存储失败")
         }else {
-            ToastUtils.showShort("小宝贝喜欢这张图片吗?下载成功!快去图库看看吧")
+            ToastUtils.showLong("小宝贝,喜欢这张照片吗?下载成功,快去图库看看吧~")
             //发送广播, 重新刷新图库
             val scannerIntent =
                 Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse(url))
@@ -108,7 +108,7 @@ class PagerPhotoActivity : AppCompatActivity() {
                 if(flag) {
                     //Toast要在主线程操作
                     MainScope().launch {
-                        ToastUtils.showShort("小宝贝喜欢这张图片吗?下载成功!快去图库看看吧")
+                        ToastUtils.showLong("小宝贝,喜欢这张照片吗?下载成功,快去图库看看吧~")
                         //发送广播, 重新刷新图库
                         val scannerIntent =
                             Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse(saveUri.toString()))

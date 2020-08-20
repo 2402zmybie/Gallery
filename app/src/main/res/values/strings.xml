@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Gallery</string>
+    <string name="app_name">小宝贝图片下载器</string>
     <string name="photoTag">photoTag</string>
     <string name="photo_tag">%d / %d</string>
 </resources>
